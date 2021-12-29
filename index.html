@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GoalCalculator</title>
-
     <link rel="stylesheet" href="./src/style.css" />
 </head>
 
@@ -32,15 +31,16 @@
             </div>
             <label>
           Требуемая сумма
-          <input type="number" />
+
+          <input class="sum" type="number">
         </label>
             <label>
           Дата
-          <input type="date" style="width: 188px;" />
+        <input type="date" style="width: 188px;" />
         </label>
             <label>
           У меня есть
-          <input type="number" />
+        <input type="number" />
         </label>
             <label>
           % на депозит
@@ -48,10 +48,8 @@
         </label>
             <p>Ежемесечный платеж: <span class="payment"></span></p>
         </div>
-
         <label class="parBtn"><button class="add">Добавить</button></label>
     </div>
-
     <script src="./src/main.js"></script>
 </body>
 
