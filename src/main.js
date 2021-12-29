@@ -1,20 +1,34 @@
+window.addEventListener('load', () => init());
+const addBtn = document.querySelector('.add');
+
+function init() {
+    const itemList = new ItemList()
+
+    addBtn.addEventListener('click', () => {
+        itemList.addItem();
+    })
+    itemList.addItem();
+}
+
 class ItemList {
     constructor() {
-        this.container = document.querySelector('.main-container');
-        this.ItemList = [];
+        this.container = document.querySelector('#main-container');
+        this.itemList = [];
     }
     addItem() {
         const firstItem = this.container.firstChild;
-        const item = new Item(
+        const item = new Item(1,
             item => this.deleteItem(item)
         );
-        this.ItemList.push(item);
+        this.itemList.push(item);
         this.container.insertBefore(item.container, firstItem);
     }
     deleteItem(item) {
         const id = this.itemList.indexOf(item);
-        this.itemList.splice(id, 1);
-        item.container.remove();
+        if(this.itemList.length > 1) {
+            this.itemList.splice(id, 1);
+            item.container.remove();
+        }  
     }
 }
 class Item {
@@ -59,7 +73,7 @@ class Item {
         this.startSum = this.container.querySelector('.start-sum');
         this.percent = this.container.querySelector('.percent');
         this.monthPayment = this.container.querySelector('.payment');
-
+        
         const deleteBtn = this.container.querySelector('.btn-delete');
         deleteBtn.addEventListener('click', () => {
             deleteItem(this);
