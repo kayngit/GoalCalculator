@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GoalCalculator</title>
 
     <link rel="stylesheet" href="./src/style.css" />
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="main-container">
-      <div class="table">
-        <div class="delete">
-          <input class="goal" placeholder="Цель" />
-          <div class="btn-delete">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+        <div class="table">
+            <div class="delete">
+                <input class="goal" placeholder="Цель" />
+                <div class="btn-delete">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect
                 x="0.5"
                 y="0.5"
@@ -32,29 +28,31 @@
               <path d="M6 6L14 14" stroke="#C4C4C4" />
               <path d="M6 14L14 6" stroke="#C4C4C4" />
             </svg>
-          </div>
-        </div>
-        <label>
+                </div>
+            </div>
+            <label>
           Требуемая сумма
-          <input type="text" />
+          <input type="number" />
         </label>
-        <label>
+            <label>
           Дата
-          <input type="date" />
+          <input type="date" style="width: 188px;" />
         </label>
-        <label>
+            <label>
           У меня есть
-          <input type="text" />
+          <input type="number" />
         </label>
-        <label>
+            <label>
           % на депозит
-          <input type="text" />
+          <input type="number" />
         </label>
-        <p>Ежемесечный платеж: <span class="payment"></span></p>
-      </div>
-      <button class="add">Добавить</button>
+            <p>Ежемесечный платеж: <span class="payment"></span></p>
+        </div>
+
+        <label class="parBtn"><button class="add">Добавить</button></label>
     </div>
 
     <script src="./src/main.js"></script>
-  </body>
+</body>
+
 </html>
