@@ -5,7 +5,13 @@ function init() {
     const itemList = new ItemList()
 
     addBtn.addEventListener('click', () => {
-        itemList.addItem();
+        if (itemList.itemList[itemList.itemList.length - 1].title.value !== ''
+            && itemList.itemList[itemList.itemList.length - 1].sum.value !== ''
+            && itemList.itemList[itemList.itemList.length - 1].dateEnd.value !== ''
+            && itemList.itemList[itemList.itemList.length - 1].startSum.value !== ''
+            && itemList.itemList[itemList.itemList.length - 1].percent.value !== '') {
+                itemList.addItem();
+            }
     })
     itemList.addItem();
 }
