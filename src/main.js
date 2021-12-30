@@ -3,18 +3,18 @@ const addBtn = document.querySelector('.add');
 
 function init() {
     const itemList = new ItemList()
+    itemList.addItem();
 
     addBtn.addEventListener('click', () => {
-        if (itemList.itemList[itemList.itemList.length - 1].title.value !== ''
-            && itemList.itemList[itemList.itemList.length - 1].sum.value !== ''
-            && itemList.itemList[itemList.itemList.length - 1].dateEnd.value !== ''
-            && itemList.itemList[itemList.itemList.length - 1].startSum.value !== ''
-            && itemList.itemList[itemList.itemList.length - 1].percent.value !== '') {
-                itemList.addItem();
-            }
+        
+        if (itemList.itemList[itemList.itemList.length - 1].check()) {
+            itemList.addItem();
+        }
     })
-    itemList.addItem();
+
 }
+
+
 
 class ItemList {
     constructor() {
@@ -31,11 +31,18 @@ class ItemList {
     }
     deleteItem(item) {
         const id = this.itemList.indexOf(item);
-        if(this.itemList.length > 1) {
+        if (this.itemList.length > 1) {
             this.itemList.splice(id, 1);
             item.container.remove();
-        }  
+        } else {
+            item.sum.value = ''; 
+            item.dateEnd.value = ''; 
+            item.startSum.value = ''; 
+            item.percent.value = ''; 
+            item.title.value = '';
+        }
     }
+    
 }
 class Item {
     constructor(payment = 1, deleteItem) {
@@ -46,7 +53,7 @@ class Item {
         <div class="delete">
             <input class="goal" placeholder="Цель"/>
             <div class="btn-delete">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="svg-style svg-transform" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="#C4C4C4"/>
                 <path d="M6 6L14 14" stroke="#C4C4C4"/>
                 <path d="M6 14L14 6" stroke="#C4C4C4"/>
@@ -71,7 +78,6 @@ class Item {
         </label>
         <p>Ежемесечный платеж: <span class="payment">${this.monthPayment} рублей</span></p>
         </div>
-        <button class="add">Добавить</button>
         `;
         this.title = this.container.querySelector('.goal');
         this.sum = this.container.querySelector('.sum')
@@ -79,10 +85,21 @@ class Item {
         this.startSum = this.container.querySelector('.start-sum');
         this.percent = this.container.querySelector('.percent');
         this.monthPayment = this.container.querySelector('.payment');
-        
+
         const deleteBtn = this.container.querySelector('.btn-delete');
         deleteBtn.addEventListener('click', () => {
             deleteItem(this);
         })
+    }
+    check() {
+        if (this.title.value !== ''
+            && this.sum.value !== ''
+            && this.dateEnd.value !== ''
+            && this.startSum.value !== ''
+            && this.percent.value !== '') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
