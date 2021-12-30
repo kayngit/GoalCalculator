@@ -77,7 +77,7 @@ class Item {
             % на депозит
             <input class="percent" type="text">
         </label>
-        <p>Ежемесечный платеж: <span class="payment">${this.monthPayment} рублей</span></p>
+        <p>Ежемесечный платеж: <span class="payment"></span> </p>
         </div>
         `;
         this.title = this.container.querySelector('.goal');
@@ -85,12 +85,15 @@ class Item {
         this.dateEnd = this.container.querySelector('.date-end');
         this.startSum = this.container.querySelector('.start-sum');
         this.percent = this.container.querySelector('.percent');
-        this.monthPayment = this.container.querySelector('.payment');
+        
+        this.getMonthlyPayment()
 
         const deleteBtn = this.container.querySelector('.btn-delete');
         deleteBtn.addEventListener('click', () => {
             deleteItem(this);
         })
+
+        
     }
     checkIfEmpty() {
         if (this.title.value !== ''
@@ -102,5 +105,38 @@ class Item {
         } else {
             return false;
         }
+    }
+
+    calculate() {
+            const date = new Date(this.dateEnd.value)
+            let months = Math.floor((date - Date.now()) / 2629800000)
+            let perc = this.startSum.value / 100 * this.percent.value  
+            let calc = (this.sum.value - (+this.startSum.value + +perc)) / months 
+            this.monthPayment = Math.round(calc * 100) /100
+            const span = this.container.querySelector('.payment');
+            span.innerHTML = `${this.monthPayment} рублей`
+    }
+    getMonthlyPayment() {
+        this.percent.addEventListener('change', () => { 
+            if(this.checkIfEmpty()) {
+                this.calculate();
+                console.log('l')
+            }
+        })
+        this.sum.addEventListener('change', () => {
+            if(this.checkIfEmpty()) {
+                this.calculate();
+            }
+        })
+        this.startSum.addEventListener('change', () => {
+            if(this.checkIfEmpty()) {
+                this.calculate();
+            }
+        })
+        this.dateEnd.addEventListener('change', () => {
+            if(this.checkIfEmpty()) {
+                this.calculate();
+            }
+        })
     }
 }
