@@ -3,12 +3,17 @@ const addBtn = document.querySelector('.add');
 
 function init() {
     const itemList = new ItemList()
+    itemList.addItem();
 
     addBtn.addEventListener('click', () => {
-        itemList.addItem();
+        
+        if (itemList.itemList[itemList.itemList.length - 1].checkIfEmpty()) {
+            itemList.addItem();
+        }
     })
-    itemList.addItem();
 }
+
+
 
 class ItemList {
     constructor() {
@@ -16,29 +21,38 @@ class ItemList {
         this.itemList = [];
     }
     addItem() {
-        const firstItem = this.container.firstChild;
         const item = new Item(1,
             item => this.deleteItem(item)
         );
 
         this.itemList.push(item);
         this.container.append(item.container);
+    }
+    deleteItem(item) {
+        const id = this.itemList.indexOf(item);
+            if (this.itemList.length > 1) {
+                if(confirm('Вы точно хотите удалить эту копилку?')) {
+                this.itemList.splice(id, 1);
+                const table = item.container.querySelector('.table');
+                const size = table.getBoundingClientRect();
+                this.animation(size);
+                item.container.remove();
+                }
+            } else {
+                if(confirm('Очистить эту копилку?')) {
+                item.sum.value = ''; 
+                item.dateEnd.value = ''; 
+                item.startSum.value = ''; 
+                item.percent.value = ''; 
+                item.title.value = '';
+                }
+            }
         setTimeout(() => item.container.style.opacity = "1", 500)
         
         const table = item.container.querySelector('.table');
         const size = table.getBoundingClientRect();
         console.log(size.height);
         this.animation(size);
-    }
-    deleteItem(item) {
-        const id = this.itemList.indexOf(item);
-        if(this.itemList.length > 1) {
-            this.itemList.splice(id, 1);
-            const table = item.container.querySelector('.table');
-            const size = table.getBoundingClientRect();
-            this.animation(size);
-            item.container.remove();
-        }  
     }
     animation(size) {
         this.itemList.forEach((x, i) => {
@@ -80,7 +94,7 @@ class Item {
                     % на депозит
                     <input class="percent" type="text">
                 </label>
-                <p>Ежемесечный платеж: <span class="payment">${this.monthPayment} рублей</span></p>
+                <p>Ежемесечный платеж: <span class="payment"></span> </p>
         </div>
         `;
         this.title = this.container.querySelector('.goal');
@@ -88,11 +102,58 @@ class Item {
         this.dateEnd = this.container.querySelector('.date-end');
         this.startSum = this.container.querySelector('.start-sum');
         this.percent = this.container.querySelector('.percent');
-        this.monthPayment = this.container.querySelector('.payment');
         
+        this.getMonthlyPayment()
+
         const deleteBtn = this.container.querySelector('.btn-delete');
         deleteBtn.addEventListener('click', () => {
             deleteItem(this);
+        })
+
+        
+    }
+    checkIfEmpty() {
+        if (this.title.value !== ''
+            && this.sum.value !== ''
+            && this.dateEnd.value !== ''
+            && this.startSum.value !== ''
+            && this.percent.value !== '') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    calculate() {
+            const date = new Date(this.dateEnd.value)
+            let months = Math.floor((date - Date.now()) / 2629800000)
+            let perc = this.startSum.value / 100 * this.percent.value  
+            let calc = (this.sum.value - (+this.startSum.value + +perc)) / months 
+            this.monthPayment = Math.round(calc * 100) /100
+            const span = this.container.querySelector('.payment');
+            span.innerHTML = `${this.monthPayment} рублей`
+    }
+    getMonthlyPayment() {
+        this.percent.addEventListener('change', () => { 
+            if(this.checkIfEmpty()) {
+                this.calculate();
+                console.log('l')
+            }
+        })
+        this.sum.addEventListener('change', () => {
+            if(this.checkIfEmpty()) {
+                this.calculate();
+            }
+        })
+        this.startSum.addEventListener('change', () => {
+            if(this.checkIfEmpty()) {
+                this.calculate();
+            }
+        })
+        this.dateEnd.addEventListener('change', () => {
+            if(this.checkIfEmpty()) {
+                this.calculate();
+            }
         })
     }
 }
