@@ -24,6 +24,7 @@ class ItemList {
         const item = new Item(1,
             item => this.deleteItem(item)
         );
+
         this.itemList.push(item);
         this.container.append(item.container);
     }
@@ -32,6 +33,9 @@ class ItemList {
             if (this.itemList.length > 1) {
                 if(confirm('Вы точно хотите удалить эту копилку?')) {
                 this.itemList.splice(id, 1);
+                const table = item.container.querySelector('.table');
+                const size = table.getBoundingClientRect();
+                this.animation(size);
                 item.container.remove();
                 }
             } else {
@@ -43,6 +47,19 @@ class ItemList {
                 item.title.value = '';
                 }
             }
+        setTimeout(() => item.container.style.opacity = "1", 500)
+        
+        const table = item.container.querySelector('.table');
+        const size = table.getBoundingClientRect();
+        console.log(size.height);
+        this.animation(size);
+    }
+    animation(size) {
+        this.itemList.forEach((x, i) => {
+            console.log(x.container)
+            x.container.style.top = (size.height + 10) * (this.itemList.length - i -1) + 'px';
+            console.log(x.container.style.top, x.container.classList)
+        });
     }
 }
 class Item {
@@ -51,33 +68,33 @@ class Item {
         this.container.classList.add('item');
         this.container.innerHTML = `
         <div class="table">
-        <div class="delete">
-            <input class="goal" placeholder="Цель"/>
-            <div class="btn-delete">
-            <svg class="svg-style svg-transform" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="#C4C4C4"/>
-                <path d="M6 6L14 14" stroke="#C4C4C4"/>
-                <path d="M6 14L14 6" stroke="#C4C4C4"/>
-            </svg>
-        </div>
-        </div>
-        <label>
-            Требуемая сумма
-            <input class="sum" type="text">
-        </label>
-        <label>
-            Дата
-            <input class="date-end" type="date">
-        </label>
-        <label>
-            У меня есть
-            <input class="start-sum" type="text">
-        </label>
-        <label>
-            % на депозит
-            <input class="percent" type="text">
-        </label>
-        <p>Ежемесечный платеж: <span class="payment"></span> </p>
+                <div class="delete">
+                    <input class="goal" placeholder="Цель"/>
+                    <div class="btn-delete">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="#C4C4C4"/>
+                            <path d="M6 6L14 14" stroke="#C4C4C4"/>
+                            <path d="M6 14L14 6" stroke="#C4C4C4"/>
+                        </svg>
+                    </div>
+                </div>
+                <label>
+                    Требуемая сумма
+                    <input class="sum" type="text">
+                </label>
+                <label>
+                    Дата
+                    <input class="date-end" type="date">
+                </label>
+                <label>
+                    У меня есть
+                    <input class="start-sum" type="text">
+                </label>
+                <label>
+                    % на депозит
+                    <input class="percent" type="text">
+                </label>
+                <p>Ежемесечный платеж: <span class="payment"></span> </p>
         </div>
         `;
         this.title = this.container.querySelector('.goal');
