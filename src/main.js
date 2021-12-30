@@ -28,21 +28,24 @@ class ItemList {
         const table = item.container.querySelector('.table');
         const size = table.getBoundingClientRect();
         console.log(size.height);
-        
-        this.itemList.forEach((x, i) => {
-            console.log(x.container)
-            x.container.style.top = (size.height + 10) * (this.itemList.length - i -1) + 'px';
-            console.log(x.container.style.top, x.container.classList)
-        });
-        
-
+        this.animation(size);
     }
     deleteItem(item) {
         const id = this.itemList.indexOf(item);
         if(this.itemList.length > 1) {
             this.itemList.splice(id, 1);
+            const table = item.container.querySelector('.table');
+            const size = table.getBoundingClientRect();
+            this.animation(size);
             item.container.remove();
         }  
+    }
+    animation(size) {
+        this.itemList.forEach((x, i) => {
+            console.log(x.container)
+            x.container.style.top = (size.height + 10) * (this.itemList.length - i -1) + 'px';
+            console.log(x.container.style.top, x.container.classList)
+        });
     }
 }
 class Item {
