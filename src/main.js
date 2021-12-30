@@ -5,11 +5,8 @@ function init() {
     const itemList = new ItemList()
     itemList.addItem();
 
-    addBtn.addEventListener('click', () => {
-        
-        if (itemList.itemList[itemList.itemList.length - 1].checkIfEmpty()) {
+    addBtn.addEventListener('click', () => {        
             itemList.addItem();
-        }
     })
 }
 
@@ -21,12 +18,18 @@ class ItemList {
         this.itemList = [];
     }
     addItem() {
+
         const item = new Item(1,
             item => this.deleteItem(item)
         );
-
+        
         this.itemList.push(item);
         this.container.append(item.container);
+
+        const table = item.container.querySelector('.table');
+        const size = table.getBoundingClientRect();
+        setTimeout(() => item.container.style.opacity = 1, 500);
+        this.animation(size);
     }
     deleteItem(item) {
         const id = this.itemList.indexOf(item);
@@ -47,16 +50,10 @@ class ItemList {
                 item.title.value = '';
                 }
             }
-        setTimeout(() => item.container.style.opacity = "1", 500)
-        
-        const table = item.container.querySelector('.table');
-        const size = table.getBoundingClientRect();
-        console.log(size.height);
-        this.animation(size);
     }
     animation(size) {
+
         this.itemList.forEach((x, i) => {
-            console.log(x.container)
             x.container.style.top = (size.height + 10) * (this.itemList.length - i -1) + 'px';
             console.log(x.container.style.top, x.container.classList)
         });
@@ -113,8 +110,7 @@ class Item {
         
     }
     checkIfEmpty() {
-        if (this.title.value !== ''
-            && this.sum.value !== ''
+        if ( this.sum.value !== ''
             && this.dateEnd.value !== ''
             && this.startSum.value !== ''
             && this.percent.value !== '') {
@@ -137,7 +133,6 @@ class Item {
         this.percent.addEventListener('change', () => { 
             if(this.checkIfEmpty()) {
                 this.calculate();
-                console.log('l')
             }
         })
         this.sum.addEventListener('change', () => {
