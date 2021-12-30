@@ -12,6 +12,10 @@ html {
     height: 100%;
 }
 
+.item {
+    padding: 10px 0;
+}
+
 .table {
     margin: 5px auto;
     padding: 8px;
@@ -106,6 +110,11 @@ input::-webkit-inner-spin-button {
     position: absolute;
 }
 
+.main-container {
+    display: flex;
+    padding: 20px 0;
+}
+
 .add {
     position: fixed;
     top: 20px;
@@ -129,7 +138,7 @@ input::-webkit-inner-spin-button {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1;
-    margin: 20px;
+    margin: 0 20px;
     padding: 1.2em 2.8em;
     text-decoration: none;
     text-align: center;
@@ -156,4 +165,17 @@ input::-webkit-inner-spin-button {
 
 .btn-style:hover {
     background-position: 100px;
+}
+
+@media screen and (max-width: 900px) {
+    .main-container {
+        flex-direction: column;
+    }
+    .parBtn {
+        position: static;
+    }
+    .add {
+        position: static;
+        margin: 10px auto;
+    }
 }

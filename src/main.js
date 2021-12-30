@@ -7,11 +7,10 @@ function init() {
 
     addBtn.addEventListener('click', () => {
         
-        if (itemList.itemList[itemList.itemList.length - 1].check()) {
+        if (itemList.itemList[itemList.itemList.length - 1].checkIfEmpty()) {
             itemList.addItem();
         }
     })
-
 }
 
 
@@ -22,32 +21,34 @@ class ItemList {
         this.itemList = [];
     }
     addItem() {
-        const firstItem = this.container.firstChild;
         const item = new Item(1,
             item => this.deleteItem(item)
         );
         this.itemList.push(item);
-        this.container.insertBefore(item.container, firstItem);
+        this.container.append(item.container);
     }
     deleteItem(item) {
         const id = this.itemList.indexOf(item);
-        if (this.itemList.length > 1) {
-            this.itemList.splice(id, 1);
-            item.container.remove();
-        } else {
-            item.sum.value = ''; 
-            item.dateEnd.value = ''; 
-            item.startSum.value = ''; 
-            item.percent.value = ''; 
-            item.title.value = '';
-        }
+            if (this.itemList.length > 1) {
+                if(confirm('Вы точно хотите удалить эту копилку?')) {
+                this.itemList.splice(id, 1);
+                item.container.remove();
+                }
+            } else {
+                if(confirm('Очистить эту копилку?')) {
+                item.sum.value = ''; 
+                item.dateEnd.value = ''; 
+                item.startSum.value = ''; 
+                item.percent.value = ''; 
+                item.title.value = '';
+                }
+            }
     }
-    
 }
 class Item {
     constructor(payment = 1, deleteItem) {
         this.container = document.createElement('div');
-        this.container.id = 'id';
+        this.container.classList.add('item');
         this.container.innerHTML = `
         <div class="table">
         <div class="delete">
@@ -91,7 +92,7 @@ class Item {
             deleteItem(this);
         })
     }
-    check() {
+    checkIfEmpty() {
         if (this.title.value !== ''
             && this.sum.value !== ''
             && this.dateEnd.value !== ''
